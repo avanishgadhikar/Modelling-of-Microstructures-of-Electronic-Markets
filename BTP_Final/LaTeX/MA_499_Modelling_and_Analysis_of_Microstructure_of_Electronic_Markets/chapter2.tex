@@ -1,0 +1,188 @@
+\chapter{Understanding the Microstructure of Financial Markets}
+
+% Market Microstructure is the study of the process and outcomes of exchanging assets under explicit trading rules. The study of market microstructures analyzes how specific trading mechanisms affect the price formation process. The microstructure literature is the source for studies on the process of exchanging assets. These studies cover both the activities involved, such as trading strategies, and the resulting outcomes, including asset prices, volume, risk transfers, etc. Research on the topic exploits the structure provided by various trading mechanisms to model how price-setting rules evolve in different markets. Studies focus on two key aspects of trading - liquidity and price discovery, both of which are the primary aspects that drive the questions and issues behind the design of effective algorithmic and high-frequency trading.
+
+% Keeping our focus on the electronic exchanges driven by Order Books, we find that the market participants can be classified broadly into three categories-
+% \begin{itemize}
+%     \item \textbf{Market makers:} professional traders who profit from facilitating exchange in a particular asset and exploit their skills in executing trades.
+%     \item \textbf{Informed traders:} traders who profit from leveraging information not reflected in market prices by trading assets in anticipation of their appreciation or depreciation.
+%     \item \textbf{Fundamental (or noise or liquidity) traders:} those who are driven by economic fundamentals outside the exchange.
+% \end{itemize}
+% Let us now see, how the price dynamics are affected by market makers, traders who use their informational advantage and uninformed traders.
+
+% \section{Market Making}
+% Market Makers play a crucial role in markets by providing liquidity to participants by quoting prices to buy or sell the assets being traded. An important market participant the 'passive' market maker- the one who facilitates trades and profits from his/her execution skills. We will primarily focus on this type of market participant. A key characteristic of such a participant is the ability to quickly adapt to evolving market conditions. The other type is the 'active' market maker. The one who anticipates market movements and predicts the time for optimal market intervention.
+
+% In an active exchange it is fair to assume that there are many market makers in competition. In such a competitive market, there are a number of theories to determine the spread of prices. Before delving into such models in Chapter 3, we will first see the issues faced by liquidity providers.
+
+% \subsection{Grossman-Miller Market Making Model}
+% A Market Maker plays the role of providing liquidity to the other market participants. This objective is achieved by accepting one side of a trade, be it buy or sell, and holding the asset (or shorting the asset in case of a sell) for an uncertain period of time. In such a situation he/she is exposed to the risk of the price moving against him/her and thus experiencing a loss during the subsequent sell or buy.
+
+% Grossman and Miller (1988), describe a model to capture this scenario and thus explain how liquidity traders obtain a premium which correctly compensates them for the risk of uncertainity. Considering a simplified version of their model, with the following parameters- 
+% \begin{description}
+%     \item[n,] a finite number of Market Makers.
+%     \item[3 dates,] t = \{1, 2, 3\}.
+%     \item[LT1,] a liquidity trader coming in at t = 1 in order to sell \textit{i} units of the asset.
+%     \item[LT2,] a liquidity trader coming in at t = 2 in order to purchase \textit{i} units of the asset.
+% \end{description}
+% All agents start with an intial cash of \textit{$W_0$}. The Market Makers hold no assets, while LT1 holds \textit{i} units and LT2 holds \textit{-i} units.
+
+% At t = 3, we model the price changes in the following way - 
+% \begin{equation*}
+%     S_3 = \mu + \epsilon_2 + \epsilon_3
+% \end{equation*}
+% where, $\mu$ is a constant and $\epsilon_2$, $\epsilon_3$ are independent random variables following $N(0, \sigma^2)$
+
+% This model incorporates the fact that the realised cash value can increase or decrease. We assume all participants, Market Makers and liquidity traders are risk-averse and wanting to maximise the utility function. They are trying to maximise the future random cash value of the asset (X3): $\mathbb{E}[U(X)]$, where the utility function $U(X)$ can be taken to be an exponential function of the form $U(X) = -$exp$(-\gamma X)$. ($\gamma > 0$ is a parameter capturing the risk aversion)
+
+% Back calculating the dynamics of the model we get that, at t = 3, the cash value of the asset is realised an we have $S_3 = \mu + \epsilon_2 +\epsilon_3$. At t = 2, the 
+
+% \section{Introduction to Market Microstructure}
+% \label{sec:introduction}
+
+Market Microstructure is defined as "the study of the process and outcomes of exchanging assets under explicit trading rules" \cite{ohara1997}. The field analyzes how specific trading mechanisms and structures affect the price formation process. The microstructure literature provides the foundation for studying the practical aspects of asset exchange, including the activities involved (e.g., trading strategies) and the resulting outcomes (e.g., asset prices, volume, risk transfers). Research in this area exploits the structures provided by various trading mechanisms to model how price-setting rules evolve in different markets. Studies focus on two key aspects of trading: liquidity and price discovery, both of which are the primary drivers for the design of effective algorithmic and high-frequency trading strategies.
+
+Focusing on electronic exchanges driven by \textbf{LOBs}, market participants can be broadly classified into three categories:
+\begin{itemize}
+    \item \textbf{Market Makers (MMs):} Professional traders who profit from facilitating exchange by providing liquidity (posting quotes) and exploiting their skills in trade execution. They are typically passive providers who earn the spread.
+    \item \textbf{Informed Traders:} Traders who profit from leveraging private information not yet reflected in market prices by trading assets in anticipation of their appreciation or depreciation.
+    \item \textbf{Fundamental (or Noise/Liquidity) Traders:} Those whose trading is driven by exogenous factors such as hedging, consumption needs, or portfolio rebalancing, making them relatively insensitive to short-term price movements.
+\end{itemize}
+We now explore how the price dynamics and the composition of the bid-ask spread are affected by the interaction between these participants.
+
+\section{Market Making and the Cost of Immediacy}
+\label{sec:market-making}
+
+Market Makers play a crucial role in markets by providing liquidity to participants, typically by quoting prices to buy (bid) and sell (ask) the assets. We primarily focus on the "passive" market maker, who facilitates trades and profits from the bid-ask spread and execution skills. This requires the ability to quickly adapt to evolving market conditions. The other type is the "active" trader, who anticipates market movements and seeks optimal intervention timing.
+
+In an active, competitive market, the spread is determined by various risk factors. Before delving into models of informational asymmetry, we first examine the issues faced by liquidity providers in managing their inventory risk.
+
+\subsection{The Grossman-Miller (1988) Market Making Model}
+\label{sec:grossman-miller}
+
+A Market Maker's objective is to provide liquidity by accepting one side of a trade, holding the resulting asset inventory (or a short position) for an uncertain period of time until a matching trade allows them to flatten their position. During this time, the MM is exposed to the risk of the asset's price moving against them, leading to a loss upon liquidation.
+
+The Grossman and Miller (1988) model captures this scenario, explaining how MMs obtain a \textit{liquidity premium} that compensates them exactly for the price risk of holding inventory.
+
+\subsubsection{Model Setup and Assumptions}
+We consider a simplified, three-date setting with \textbf{n} being the (finite) number of identical, competitive Market Makers (MMs).
+\begin{description}
+    \item[\textbf{t \in \{1, 2, 3\}] Three distinct dates for trading and asset realization.
+    \item[$\textbf{i}$] The quantity of the asset LT1 wants to sell at $t=1$ ($i>0$).
+    \item[$\textbf{LT1, LT2}$] Liquidity Trader 1 (LT1) arrives at $t=1$ to sell $i$ units; LT2 arrives at $t=2$ to purchase $i$ units.
+\end{description}
+
+
+All agents start with initial cash $W_0$. MMs start with no assets; LT1 holds $i$ units; LT2 is short $-i$ units. The asset's cash value at $t=3$ is modeled as:
+\begin{equation}
+    S_3 = \mu + \epsilon_2 + \epsilon_3
+\end{equation}
+where $\mu$ is a constant, and $\epsilon_2, \epsilon_3$ are independent random variables following $N(0, \sigma^2)$. Crucially, all participants are \textit{risk-averse}, seeking to maximize the expected utility of their final wealth $\mathbb{E}[U(X_3)]$, with the utility function taken to be the exponential form:
+\begin{equation}
+    U(X) = - \exp(-\gamma X), \quad \gamma > 0
+\end{equation}
+where $\gamma$ is the \textbf{risk aversion parameter}.
+\subsubsection{Backward Solution and Equilibrium Pricing}
+
+The model is solved recursively, starting from the final date, as follows
+
+\paragraph{Equilibrium at \textbf{$t=2$:}}
+At $t=2$, the shock $\epsilon_2$ is realized, and the MMs, LT1, and LT2 interact. Since $\epsilon_2$ is known and LT1's initial sale is balanced by LT2's purchase, the total net asset supply is $i + (-i) = 0$. Given the zero net supply and competition, the equilibrium price $S_2$ is the expected future value:
+\begin{equation}
+    S_2 = \mathbb{E}[S_3 | \epsilon_2] = \mu + \epsilon_2
+\end{equation}
+At this price, the optimal final holding for all agents is $q_2^{j,*} = 0$, as there is no compensation needed to hold the asset beyond $t=2$.
+
+\paragraph{Equilibrium at \textbf{$t=1$:}}
+At $t=1$, MMs and LT1 must determine the price $S_1$ and their optimal holdings $q_1^{j,*}$. They anticipate the price $S_2$ at $t=2$ and the risk exposure from $\epsilon_2$. The optimal asset holding for any agent $j \in \{MM, LT1\}$ is found by maximizing the expected utility, yielding:
+\begin{equation}
+    q_1^{j,*} = \frac{\mathbb{E}[S_2 | \epsilon_1] - S_1}{\gamma \sigma^2} = \frac{\mu - S_1}{\gamma \sigma^2}
+\end{equation}
+The market-clearing condition requires that the total demand match the supply, which is $i$ (the quantity LT1 brings to sell):
+$$ \sum_{j} q_1^{j,*} = n \cdot q_1^{MM,*} + q_1^{LT1,*} = i $$
+Substituting the optimal holdings:
+$$ (n+1) \left( \frac{\mu - S_1}{\gamma \sigma^2} \right) = i $$
+Solving for the equilibrium trading price $S_1$:
+\begin{equation}
+    S_1 = \mu - \left( \frac{\gamma \sigma^2}{n+1} \right) i
+\end{equation}
+
+\subsubsection{Economic Interpretation: The Liquidity Discount}
+
+The equation for $S_1$ is the fundamental insight of the GM model. The deviation of the trading price from the fundamental value $\mu$ is the \textbf{liquidity discount}:
+\begin{equation}
+    |S_1 - \mu| = \left( \frac{\gamma \sigma^2}{n+1} \right) |i|
+\end{equation}
+This discount (or premium, if $i<0$) represents the exact compensation MMs receive for bearing the risk of holding the asset until the matching liquidity (LT2) arrives. It isolates \textbf{inventory risk} as the first key component of the bid-ask spread. The discount is directly influenced by:
+\begin{itemize}
+    \item \textbf{Risk Aversion ($\gamma$):} A higher $\gamma$ increases the required compensation, widening the spread.
+    \item \textbf{Volatility ($\sigma^2$):} Higher price uncertainty increases the inventory risk and thus widens the spread.
+    \item \textbf{Competition ($n$):} An increase in $n$ reduces the required premium per MM, narrowing the spread.
+\end{itemize}
+
+This model provides the theoretical basis for the concept of "temporary price impact" and measures of market depth ($\lambda$), where the price change is proportional to the size of the trade imbalance.
+
+\section{Trading on an Informational Advantage}
+\label{sec:informational-advantage}
+
+The GM model assumes all information is public. We now turn to models that incorporate \textbf{informational asymmetry}, where the spread is necessary to compensate MMs for the risk of trading against a party with superior information, a phenomenon known as \textbf{adverse selection}.
+
+\subsection{The Kyle (1985) Model: Price Discovery}
+\label{sec:kyle}
+
+The \textit{Kyle (1985) model} analyzes the optimal trading strategy of a single, monopolistic informed trader and how information is incorporated into prices.
+
+\subsubsection{Model Setup and Equilibrium Conditions}
+In this static model, MMs are \textbf{risk-neutral} (eliminating inventory risk). The market consists of:
+\begin{itemize}
+    \item \textbf{Informed Trader (Insider):} Knows the true final value $v \sim N(\mu, \sigma_v^2)$, and chooses trade $x(v)$.
+    \item \textbf{Liquidity Traders (Noise):} Have random, exogenous demand $u \sim N(0, \sigma_u^2)$, providing camouflage.
+    \item \textbf{Market Makers:} Observe the total order flow $\omega = x(v) + u$. Competitive MMs set the price $S(\omega)$ to ensure zero expected profits, conditional on observed information: $S(\omega) = \mathbb{E}[v | \omega]$.
+\end{itemize}
+The insider maximizes their expected profit $\mathbb{E}[x(v - S)]$ while anticipating the MMs' pricing rule. The unique linear Nash equilibrium is characterized by:
+\begin{enumerate}
+    \item The MM's pricing rule: $S(\omega) = \mu + \lambda \omega$
+    \item The Insider's optimal trade: $x^*(v) = \beta (v - \mu)$
+\end{enumerate}
+
+\subsubsection{Kyle's Lambda ($\lambda$) and Price Impact}
+The equilibrium value for \textit{Kyle's lambda ($\lambda$)} is:
+\begin{equation}
+    \lambda = \frac{\sigma_v}{2 \sigma_u}
+\end{equation}
+Kyle's $\lambda$ is the measure of the permanent price impact of order flow. It quantifies the degree to which price shifts in response to a trade to reflect the information content.
+\begin{itemize}
+    \item \textbf{Informational Risk:} $\lambda$ increases with the volatility of the asset's fundamental value ($\sigma_v$), as the potential loss from adverse selection is higher.
+    \item \textbf{Camouflage:} $\lambda$ decreases with the volatility of noise trade ($\sigma_u$). Higher noise allows the insider to trade more aggressively (higher $\beta$) without causing a large price shift, thus maximizing profit.
+    \item \textbf{Price Discovery:} The change in price, $\lambda \omega$, represents the instantaneous movement of the price toward the true value $v$, demonstrating the mechanism by which private information is integrated into public prices.
+\end{itemize}
+
+\subsection{The Glosten-Milgrom (1985) Model: The Informational Hedge}
+\label{sec:glosten-milgrom}
+
+The Glosten-Milgrom (GMi) model provides a complementary view, focusing specifically on the MM's quote-setting decision when faced with both informed and uninformed traders.
+
+\subsubsection{The Spread as a Conditional Expectation}
+Using a simplified two-state asset value ($V_H$ or $V_L$), MMs set the bid ($b$) and ask ($a$) prices. Competition dictates that MMs set quotes to maintain zero expected profits. This requires the quote to be the conditional expected value of the asset given the trade direction:
+\begin{align}
+    \text{Ask Price } a &= \mathbb{E}[v \mid \text{Buy Order}] \\
+    \text{Bid Price } b &= \mathbb{E}[v \mid \text{Sell Order}]
+\end{align}
+Since a buy order is more likely to originate from an informed trader who knows $v=V_H$, we have $a > \mathbb{E}[v]$. Conversely, a sell order suggests $v=V_L$, so $b < \mathbb{E}[v]$.
+
+\subsubsection{Adverse Selection and Spread Size}
+The resulting bid-ask spread ($a-b$) is the MM's informational hedge. It is the required compensation to cover the expected loss incurred when trading with a better-informed counterparty. The half-spreads ($\delta_a, \delta_b$) increase with the proportion of informed traders ($\alpha$) and the magnitude of the underlying informational uncertainty.
+
+The model also demonstrates the dynamic nature of price discovery: a sequence of buy orders causes the MMs to continually update their belief that $v=V_H$ using \textbf{Bayes' Rule}. As this belief changes, the midprice ($\displaystyle{\frac{a+b}{2}}$) shifts, and the spread compensates the MM for the informational asymmetry.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The foundational models of market microstructure provide the essential economic theory for understanding the costs and dynamics of trading that drive Algorithmic and High-Frequency Trading strategy design:
+
+\begin{itemize}
+    \item \textbf{The Grossman-Miller Model} identifies inventory risk as a primary source of the spread, leading to the cost of immediacy and the concept of \textbf{temporary price impact}.
+    \item \textbf{The Kyle Model} establishes the mechanism of \textbf{price discovery}, quantifying the cost of \textbf{adverse selection} through \textbf{permanent price impact ($\lambda$)}.
+    \item \textbf{The Glosten-Milgrom Model} explains the necessity of the spread as an \textbf{informational hedge} that dynamically adjusts to the perceived toxicity of order flow.
+\end{itemize}
+These frameworks delineate the components of the trading cost, namely, Inventory Cost, Operational Cost (not explicitly modeled here, but necessary for competition), and Adverse Selection Cost—that any successful algorithmic strategy must manage. The following chapters will build upon these theoretical results to develop quantitative methods for optimal execution and market making.

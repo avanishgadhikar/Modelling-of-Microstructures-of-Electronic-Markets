@@ -1,0 +1,480 @@
+\documentclass{cubeamer}
+
+\title{Modelling and Analyis of Microstructures of Electronic Markets}
+\subtitle{MA 499 Project I}
+\author[Avanish Gadhikar, Kushal Gupta]{Avanish Gadhikar \and Kushal Gupta}
+\date{\tomorrow} % or whatever the date you are presenting in is
+\institute[Indian Institute of Technology]{Department of Mathematics, IIT Guwahati}
+% \copyrightnotice{Published by the American Institute of Aeronautics and Astronautics, Inc., with permission}
+
+\begin{document}
+
+\maketitle
+
+\cutoc
+
+\section{Introduction}
+
+\begin{frame}{Primer on Limit Order Books and Electronic Exchanges}
+    \begin{itemize}
+        \item Initial markets were majorly of 2 types:
+        \begin{itemize}
+            \item \textbf{Open Outcry Markets:} Buyers and Sellers meeting in a shared space to trade assets
+            \item \textbf{Quote Driven Markets:} Posting quotes to indicate price of the stock
+        \end{itemize}
+        \item These systems had the additional overhead of transaction costs to cover brokerage.
+        \item These markets were often criticized of being lethargic, open to dispute and opaque.
+        \item Commodities exchanges such as \textbf{CBOT, CME, LIFFE} operated the Open Outcry System.
+        \item \textbf{NYSE, NASDAQ, LSE} were Quote Driven Markets before shifting to Electronic Exchanges.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Primer on Limit Order Books and Electronic Exchanges (contd..)}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[height = 0.45\textheight]{img/Screenshot 2025-11-23 at 4.22.52 PM.png}
+                \caption{Traders assembling in a \textit{pit} to move assets}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[height = 0.45\textheight]{img/Screenshot 2025-11-23 at 4.23.53 PM.png}
+                \caption{A depiction of the Order Driven Markets}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Shift to Order Driven Markets}
+    \begin{itemize}
+        \item Motivated to resolve the issues with latency, transparency and intermediaries.
+        \item \textbf{Toronto Stock Exchange} was the first to introduce a Computer Assisted Trading System \textbf{(CATS)}, in 1977.
+        \item \textbf{Paris Bourse} is cited as the first fully electronic \textbf{Limit Order Book (LOB)} based Equity Trading System.
+        \item The Electronic nature reduced latency, enhanced the ease of trading, and made way for High Frequency and Algorithmic Trading.
+        \item A market in which buyers and sellers meet via an LOB is called an \textbf{order driven market}
+        \item Electronic platforms where buyers and sellers can place orders subject to priority rules.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Shift to Order Driven Markets (contd..)}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \includegraphics[height = 0.45\textheight]{img/Screenshot 2025-11-23 at 4.24.35 PM.png}
+                \caption{J. Pearce Bunting, President TSE (1977-1994) Modernised the TSE by embracing Electronic Systems }
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+        \vspace{-3mm}
+            \begin{figure}
+                \includegraphics[height = 0.45\textheight]{img/Screenshot 2025-11-23 at 4.24.59 PM.png}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Limit Order Books}
+    \begin{itemize}
+        \item A \textbf{Limit Order Book (LOB)} is a device that the vast majority of organised electronic markets use to store (in their central computer) the list of all the interests of market participants.
+        \item Contain information on all orders with the following characteristics:
+        \begin{itemize}
+            \item Buy/Sell Side, Price, Quantity, Timestamp among others.
+        \end{itemize}
+    \end{itemize}
+    \begin{columns}
+        \begin{column}{0.3\textwidth}
+            \begin{figure}
+            \centering
+                \includegraphics[height = 0.35\textheight]{img/Screenshot 2025-11-23 at 4.25.19 PM.png}
+                \caption{An example LOB}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.7\textwidth}
+        \centering
+        \begin{itemize}
+            \item The \textbf{Ask Price} is defined as the price of the Sell Limit Order with the lowest price.
+            \item The \textbf{Bid Price} is defined as the price of the Buy Limit Order with the highest price.
+            % \item The \textbf{Mid Price}  is the average of the Bid and Ask Prices.
+            \item The \textbf{Bid-Ask Spread} is the difference of the Ask and Bid Prices.
+        \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}{Order Book Dynamics}
+    \begin{itemize}
+        \item Orders are executed based on a price-time priority (FIFO)
+        \item There are 3 major classes of orders:
+        \begin{itemize}
+            \item \textbf{Limit Orders: }Specifies a price at which one is willing to buy/sell a certain number of shares.
+            \item \textbf{Market Orders: }Executed immediately at the best available matching quote.
+            \item \textbf{Cancellation Orders: }Cancels an existing limit order.
+        \end{itemize}
+        \item The Evolution of an Order Book over time describes market movements.
+        \item The study of LOB dynamics provides an insight into price discovery of markets
+        \item Designing Trading Algorithms, aiding regulators are some other benefits of studying LOB Dynamics.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Order Book Dynamics (contd..)}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \includegraphics[height = 0.45\textheight]{img/Screenshot 2025-11-23 at 4.25.49 PM.png}
+                \caption{A \textbf{Limit Buy Order:} Buy 2 at 69200}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \includegraphics[height = 0.45\textheight]{img/Screenshot 2025-11-23 at 4.26.09 PM.png}
+                \caption{A \textbf{Market Sell Order:} Sell 10}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Dark Pools}
+\vspace{-2mm}
+    \begin{itemize}
+        \item \textbf{Dark pools} are alternative trading systems that allow institutional investors to execute large trades without causing significant market impact.
+        \item They facilitate anonymous trading away from the lit markets.
+        \item The information on best-priced offers is not included in the consolidated data.
+        \item The first dark pool was established in 1986, and as of 2025 \textbf{51.8\% }of trade volume occurs here
+        \item \textbf{Regulations behind Dark Pools}
+        \begin{itemize}
+            \item \textbf{SEC (Securities and Exchanges Commmission)}, is the primary regulating body.
+            \item \textbf{FINRA (Financial Industry Regulatory Authority)} assists in monitoring compliance.
+            \item \textbf{MiFID, MiFID II (Markets in Financial Instruments Directive)} are the directives behind these regulations.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\section{Understanding Market Microstructure}
+
+\begin{frame}{Understanding the Microstructure of Financial Markets}
+    \vspace{-2mm}
+    \begin{itemize}
+        \item \textbf{Market Microstructure} is defined as \textit{“the study of the process and outcomes of exchanging assets under explicit trading rules”.}
+        \item The evolution of price formation based on trading mechanisms and structures.
+        \item Studies focus on two key aspects of trading:
+        \begin{itemize}
+            \item \textbf{Liquidity}
+            \item \textbf{Price Discovery} 
+        \end{itemize}
+        \item Participants in LOB driven electronic exchanges can be classified as follows:
+        \begin{itemize}
+            \item \textbf{Market Makers}
+            \item \textbf{Informed Traders}
+            \item \textbf{Fundamental (or Noise/Liquidity) Traders}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Market Makers and the Cost of Immediacy}
+    \begin{itemize}
+        \item \textbf{Market Makers,} play a crucial role in markets by providing liquidity to participants
+
+        \item They earn through the \textbf{bid-ask spread}, by \textbf{buy}ing \textbf{low} and \textbf{sell}ing \textbf{high}.
+        
+        \item \textbf{Cost of Immediacy,} is exposure to price risk when they hold inventory, as the asset price can move against them.
+
+        \item \textbf{Passive Market Maker,} who facilitates trades and profits from the bid-ask spread and execution skills, requiring the ability to quickly adapt to evolving market conditions.
+
+        \item \textbf{Active Market Maker,} who anticipates market movements and seeks optimal intervention timing
+        \item In active, competitive markets, the spread is determined by various risk factors, as it adjusts to compensate market makers for this risk.
+    \end{itemize}
+\end{frame}
+
+
+%%%% KUSHAL'S ADDITIONS %%%%%%
+
+
+\begin{frame}{Grossman--Miller Market Making Model (1988)}
+    \textbf{Objective:} Market Makers receive a 
+    \textit{Liquidity Premium} as compensation for the risk exposure. \\
+    \textbf{Model Setup:}
+    \begin{itemize}
+        \item $n$: number of identical and competitive Market Makers.
+        \item LT1: intends to \textbf{sell} $i$ units of a risky asset at $t = 1$.
+        \item LT2: intends to \textbf{buy} $i$ units of the same risky asset at $t = 2$.
+    \end{itemize}
+    \vspace{-2mm}
+    \textbf{Equilibrium at $t = 2$:}
+    \begin{itemize}
+        \item A shock $\varepsilon_{2}$ is realised.
+        \item LT2’s purchase cancels the total supply imbalance.
+    \end{itemize}
+    \vspace{-2mm}
+    \textbf{Terminal Price:}
+    \[
+        S_{2} = \mathbb{E}[S_{3} \mid \varepsilon_{2}] = \mu + \varepsilon_{2}
+    \]
+
+\end{frame}
+
+
+\begin{frame}{Grossman--Miller Model: Market Making Model (1988) (contd..)}
+    The Market Maker chooses inventory to maximise expected utility.
+
+    \vspace{3mm}
+    \textbf{Optimal Inventory Choice:}
+    \[
+        q_{1}^{*}
+        = \frac{\mathbb{E}[S_{2} \mid \varepsilon_{1}] - S_{1}}{\gamma \sigma^{2}}
+        = \frac{\mu - S_{1}}{\gamma \sigma^{2}}
+    \]
+
+    \vspace{3mm}
+    \begin{itemize}
+        \item $q_{1}^{*}$ determines the equilibrium price $S_{1}$.
+        \item Market Makers demand compensation for the inventory risk $\Rightarrow$ the \textbf{liquidity premium}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Kyle (1985) Model -- Price Discovery}
+  \begin{itemize}
+    \item Single informed trader trades on private value $v$
+    \item Noise traders generate random demand $u$
+    \item Market makers observe total order flow $\omega = x + u$
+    \item Competitive MMs set price to break even:
+      $S(\omega) = E[v \mid \omega]$
+    \item Equilibrium pricing rule:
+      $S(\omega) = \mu + \lambda \omega$
+    \item Insider’s optimal trade:
+      $x^*(v) = \beta (v - \mu)$
+    \item Kyle’s lambda (price impact):
+      $\lambda = \frac{\sigma_v}{2 \sigma_u}$
+    \item $\lambda$ increases with fundamental volatility $\sigma_v$
+    \item $\lambda$ decreases with noise volatility $\sigma_u$ (camouflage)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Glosten--Milgrom (1985) Model -- Adverse Selection}
+  \begin{itemize}
+    \item Market maker sets quotes facing informed and uninformed traders
+    \item Zero-profit condition: quotes must equal conditional expectations
+    \item \textbf{Ask price:}
+      $a = E[v \mid \text{Buy Order}]$
+    \item \textbf{Bid price:}
+      $b = E[v \mid \text{Sell Order}]$
+    \item Buy orders imply higher value $\Rightarrow a > E[v]$
+    \item Sell orders imply lower value $\Rightarrow b < E[v]$
+    \item Bid--ask spread $(a - b)$ hedges adverse selection risk
+    \item Spread widens with informed trader proportion $\alpha$ and value uncertainty
+    \item Sequential order flow updates MM beliefs via Bayes' Rule, shifting the midprice
+  \end{itemize}
+\end{frame}
+
+\section{Mathematical Modelling}
+
+\begin{frame}{Early Order Book Models}
+    \vspace{-2mm}
+    \begin{itemize}
+        \item Early Market Simulation efforts were motivated to study regulatory issues.
+        \item \textbf{Zero Intelligence Models, }are those where orders are submitted randomly without any strategic behaviour. Two initial approaches in this framework were:
+        \begin{itemize}
+            \item \textbf{Stigler’s 1964} model to simulate a financial market, using uniform arrivals of orders on a discrete grid.
+            \item \textbf{Garman’s model} simulated market dynamics by using Poissonian Arrivals of Orders.
+        \end{itemize}
+        \item Two variants of the Zero Intelligence Models are typically considered:
+        \begin{itemize}
+            \item \textbf{Unconstrained zero-intelligence traders: }Random orders at random prices.
+            \item \textbf{Constrained zero-intelligence traders: }Random orders respecting a personal reference price, preventing trades at a loss.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Models Based on Econophysics Principles}
+    \vspace{-2mm}
+    \begin{itemize}
+        \item \textbf{Econophysics} models view order books using analogies from statistical physics.
+        \item \textbf{Reaction Diffusion Models}
+        \begin{itemize}
+            \item \textbf{Bak, Paczuski and Shubik} model orders as particles diffusing on a price grid.
+            \item Transactions occur when buy and sell particles meet.
+            \item Produces a Hurst exponent (far from empirical values)
+        \end{itemize}
+        \item \textbf{Deposition-Evaporation Models}
+        \begin{itemize}
+            \item \textbf{Challet and Stinchcombe} interpret LOB as a 1D lattice.
+            \item Limit orders are analogous to deposition, market orders to annihilation, cancellations to evaporation.
+            \item Improved volatility behaviour, but still not realistic over-diffusion
+        \end{itemize}
+        \item They capture some properties such as the heavy tailed distributions but fail to reproduce realistic price distributions. 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Structure of Zero Intelligence Models}
+    \large{\textbf{Key Assumptions}}
+    \begin{itemize}
+    \item One unit-sized limit order at every price level
+    \item Initial spread is one tick
+    \item Market orders arrive as independent Poisson processes $M^{+}(t)$, $M^{-}(t)$
+    \item Intensities: $\lambda_{+}$ (buy), $\lambda_{-}$ (sell)
+    \item Single liquidity provider maintains a one-tick spread
+    \item Posts same-side limit order with probability $u$, opposite side with $1-u$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Structure of Zero Intelligence Models}
+    \large{\textbf{Mid-Price Dynamics}}
+    \begin{itemize}
+    \item Mid-price driven by market order arrivals
+    \item $dP(t) = \Delta P \,(dM^{+}(t) - dM^{-}(t))\, Z$
+    \item $Z \sim \text{Bernoulli}(u)$
+    \item Infinitesimal generator $Lf(P)$ defines price evolution
+    \item Taylor expansion yields drift and diffusion terms
+    \item Scaling limit converges to a Wiener process with drift
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Structure of Zero Intelligence Models}
+    \large{\textbf{LOB Dynamics}}
+    \begin{itemize}
+    \item LOB represented by $(a_1,\dots,a_K ; b_1,\dots,b_K)$
+    \item $a_i$: depth $i$ ticks above best bid
+    \item $b_i$: depth $i$ ticks below best ask
+    \item Driven by market, limit, and cancellation events
+    \item Shift operators maintain $K$ visible levels
+    \item Price and spread respond to events within the spread
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Structure of Zero Intelligence Models}
+    \large{\textbf{Order Arrivals and State Transitions}}
+    \begin{itemize}
+    \item Three event types drive order book evolution
+    \item Market orders with intensities $\lambda_M^{\pm}$
+    \item Limit orders at level $i$ with intensities $\lambda_{L,i}^{\pm}$
+    \item Cancellations at level $i$ with intensities $\lambda_{C,i}^{\pm} a_i$, $\lambda_{C,i}^{\pm} |b_i|$
+    \item All orders have fixed size $q$
+    \item Queue sizes change via arrivals, executions, and cancellations
+    \item Shift operators maintain $K$ visible levels in the moving frame
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Structure of Zero Intelligence Models}
+    \large{\textbf{Price and Spread Dynamics}}
+    \begin{itemize}
+    \item Best ask and bid: $P_A(t)$ and $P_B(t)$
+    \item Market buys consume depth on the ask side
+    \item Limit orders inside the spread improve quotes
+    \item Cancellations at the best queue may widen the spread
+    \item Mid-price: $P(t) = (P_A(t) + P_B(t))/2$
+    \item Spread: $S(t) = P_A(t) - P_B(t)$
+    \item Dynamics link local liquidity to price and spread behaviour
+  \end{itemize}
+\end{frame}
+
+\section{Numerical Simulation}
+
+\begin{frame}{Overview of Algorithm for Simulation}
+    \begin{itemize}
+    \item Model parameters: $K$, $\lambda_M$, $\{\lambda_{L,i}\}$, $\{\lambda_{C,i}\}$, $a_{\infty}$, $b_{\infty}$
+    \item Simulation inputs: $N$ (number of events), $X_{\text{init}}$ (initial book state)
+    \item Update cancellation rates using current queue depths
+    \item Sample waiting time $\tau$ from an exponential distribution
+    \item Select event type based on order-flow intensities
+    \item Sample event volume and price level if applicable
+    \item Update order book state and advance time
+    \item Enforce boundary depths $a_{\infty}$ and $b_{\infty}$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Parameter Estimation}
+  \begin{itemize}
+    \item $T$: Length of the daily observation window
+    \item $N_T^M$: Total number of market orders observed during $T$
+    \item Market order intensity:
+      $\lambda_M = \frac{N_T^M}{2T}$
+      (average arrival rate of market orders)
+    \item $N^L_{i,T}$: Number of limit orders submitted $i$ ticks from the best opposite quote
+    \item Limit order intensity at level $i$:
+      $\lambda_{L,i} = \frac{N^L_{i,T}}{2T}$
+      (arrival rate of limit orders at level $i$)
+    \item $N^C_{i,T}$: Number of cancellations at level $i$
+    \item $\langle X_i \rangle$: Average resting depth at level $i$
+    \item Cancellation intensity:
+      $\lambda_{C,i} = \frac{N^C_{i,T}}{2T \langle X_i \rangle}$
+      (cancellation rate normalized by available volume)
+    \item Daily estimates averaged over number of trading days
+    \item Order sizes modeled using log-normal distributions
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Results}
+    We reconstruct the depth profile reported for SCHN.PA(Abergel 2016) using the given parameter values.
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[height = 0.45\textheight]{img/Screenshot 2025-11-23 at 4.26.56 PM.png}
+                \caption{Empirical Average Depth Profile SCHN.PA}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[height = 0.45\textheight]{img/Screenshot 2025-11-23 at 4.27.17 PM.png}
+                \caption{Simulated Depth Profile SCHN.PA}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}{Results}
+    We used the algorithm in order to reproduce the depth profile of the LOB for data external to the text to fulfill an ablation study.
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[height = 0.45\textheight]{img/Screenshot 2025-11-23 at 4.27.41 PM.png}
+                \caption{Empirical Depth Profile MSFT computed from LOBSTER L10 Data}
+            \end{figure}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[height = 0.45\textheight]{img/Screenshot 2025-11-23 at 4.27.56 PM.png}
+                \caption{Simulated Depth Profile MSFT computed from estimated parameters}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% Q&A
+\begin{frame}[standout]
+    \Huge\textsc{Thank You}
+    
+    \vfill
+    
+    \LARGE\textsc{Questions?}
+\end{frame}
+
+\appendix
+
+\begin{frame}{Future Work}
+  \begin{itemize}
+    \item Compare empirical data with simulated outcomes across different modelling algorithms
+    \item Evaluate generalization on other markets and venues (e.g., crypto exchanges, dark pools)
+    \item Explore models for optimal limit order placement
+    \item Apply insights to practical settings: execution cost reduction, HFT strategies, and market making profitability
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Key References}
+  \begin{itemize}
+    \item F. Abergel, M. Anane, A. Chakraborti, A. Jedidi, and I. M. Toke. \textit{Limit Order Books}. Physics of Society: Econophysics and Sociophysics. Cambridge University Press, Cambridge, UK, 2016.
+    \item A. Cartea, S. Jaimungal, and J. Penalva. \textit{Algorithmic and High-Frequency Trading}. Cambridge University Press, Cambridge, UK, 2015.
+    \item M. O'Hara. \textit{Market Microstructure Theory}. Blackwell Publishers, Cambridge, MA, 1997.
+  \end{itemize}
+\end{frame}
+
+
+\end{document}

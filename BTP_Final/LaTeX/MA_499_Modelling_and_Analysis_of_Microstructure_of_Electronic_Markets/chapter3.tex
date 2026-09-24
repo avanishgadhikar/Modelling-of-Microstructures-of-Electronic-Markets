@@ -1,0 +1,392 @@
+\chapter{Models of Limit Order Books}
+\label{chap:lob_models}
+
+This chapter is dedicated to a review of agent-based models of limit order books, that is,
+models depicting, at the individual agent level, possibly from a statistical point of view, the
+interactions that lead to transactions on a financial market. Far from being exhaustive,
+this survey is based on selected models that are representative of important,
+specific trends in agent-based modelling.
+
+\section{Early Order-driven Market Modelling: Market Microstructure and Policy}
+The earliest market simulations were designed to study regulatory issues. The first
+attempt, by Stigler \cite{stigler1964}, investigated the impact of SEC regulations on U.S.\ stock
+markets using historical data from the 1920s and 1950s. With the growing computerization
+of markets, Hakansson et al.\ \cite{hakansson1985} developed a simulator to test the feasibility of
+automated market making.
+
+While we do not review the full microstructure literature (see O'Hara \cite{ohara1997} and
+Hasbrouck \cite{hasbrouck2007}), we highlight a few foundational works that underpin modern
+order book modelling.
+
+\subsubsection{A Pioneer Order Book Model}
+Stigler's 1964 model is the earliest documented attempt to simulate a financial market.
+Motivated by criticisms of the SEC’s 1963 Special Study \cite{cohen1963b,cohen1963a}, Stigler
+proposes a simple simulation in which price evolves within a discrete grid of $L=10$ ticks.
+Orders arrive randomly, namely, buy or sell with equal probability and uniformly over the price
+grid, and become market orders if they cross the best opposing quote. Orders not executed
+within $N=25$ time steps are cancelled. All orders have unit size, and the maximum number
+of standing orders is $N$.
+
+Slanina \cite{slanina2008} later simulated a similar model with $L=5000$ and $N=5000$,
+showing that returns follow a heavy-tailed distribution with a power-law exponent of about
+0.3, though limited by the artificial cutoff imposed by $L$.
+
+\subsubsection{Microstructure of the Double Auction}
+Garman \cite{garman1976} provides an early study of the continuous double auction that explicitly
+incorporates temporal order flow. Buy and sell orders arrive as independent Poisson
+processes with intensities $\lambda$ and $\mu$, respectively, and are of unit size. Orders crossing
+the best quote become market orders. The state of the book is represented as a vector of
+standing quantities at each price level. Although analytically tractable in principle, the
+model quickly becomes complex, highlighting the need for simulation methods and
+numerical analysis.
+
+The key question posed by Garman is structural: Does the double auction mechanism
+itself generate the leptokurtosis observed in empirical return series.
+
+\subsubsection{Zero-intelligence Models}
+The Stigler and Garman models belong to a broad class of ``zero-intelligence'' models,
+later formalized by Gode and Sunder \cite{gode1993}. In such models, orders are submitted
+randomly, without strategic behavior. Two variants are typically considered:
+\begin{itemize}
+    \item \emph{Unconstrained zero-intelligence traders}: random orders at random prices.
+    \item \emph{Constrained zero-intelligence traders}: random orders respecting a personal reference
+    price, preventing trades at a loss.
+\end{itemize}
+
+Zero-intelligence markets exhibit surprising allocative efficiency but also unrealistic price
+volatility. Later critiques (e.g.\ \cite{cliffbruten1997}) argue that some of these results are artefacts of
+the imposed constraints.
+
+These early models formed the basis for later econophysics-inspired order book models.
+
+\subsection{Order-driven Market Modelling in Econophysics}
+
+\subsubsection{The Order Book as a Reaction--Diffusion Model}
+Bak, Paczuski and Shubik \cite{bak1997} proposed a reaction--diffusion model in which buy and
+sell orders are treated as particles diffusing on a discrete price grid. A transaction occurs
+when a buy and sell particle meet. While highly stylized, the model initiates the analogy
+between order books and interacting particle systems. The resulting price dynamics exhibit
+a Hurst exponent of $H=1/4$, far from empirical values.
+
+\subsubsection{Introducing Market Orders}
+Maslov \cite{maslov2000} extends the particle model by introducing fixed limit orders, market
+orders that remove the best quote, and cancellation mechanisms. Orders are placed around
+the prevailing price, and market orders generate price changes. This produces heavy-tailed
+returns, though price dynamics remain subdiffusive ($H=1/4$).
+
+\subsubsection{Deposition--Evaporation Models}
+Challet and Stinchcombe \cite{challet2001} interpret the order book as an infinite one-dimensional
+lattice with deposition (limit orders), annihilation (market orders), and evaporation 
+(cancellation). The volatility behaviour is closer to empirical findings than earlier models
+but still lacks over-diffusive properties.
+
+\subsection{Empirical Zero-intelligence Models}
+
+Mike and Farmer \cite{mikefarmer2008} represent a major advance in empirically calibrated
+zero-intelligence modelling. Orders are placed according to Student-\(t\) distributions centered
+around the best quotes. Cancellations depend on three empirically observed factors:
+\begin{enumerate}
+    \item Position in the order book: \(y(t) = \Delta(t)/\Delta(0)\);
+    \item Imbalance between bid and ask queues: \(N_{\mathrm{imb}}(t)\);
+    \item Total number of standing orders: \(N(t)\).
+\end{enumerate}
+
+The cancellation probability is given by:
+\begin{equation}
+P(C \mid y(t), N_{\mathrm{imb}}(t), N(t))
+= 
+A (1 - e^{-y(t)})
+\bigl(N_{\mathrm{imb}}(t) + B \bigr)
+\frac{1}{N(t)},
+\label{eq:mike_farmer_cancellation}
+\end{equation}
+where \(A\) and \(B\) are fitted to data.
+
+The model reproduces several important stylized facts (heavy tails, realistic spread
+distribution), though it still encounters issues related to order-book stability and volatility
+clustering.
+
+% \subsection{Analytical Developments in Zero-intelligence Order Book Models}
+
+% Smith et al.\ \cite{smith2003} study scaling properties of liquidity and price dynamics in a limit
+% order book with Poissonian order flow. Mean-field approximations yield several analytical
+% relations summarised in Table~\ref{tab:smith_scaling}.
+
+% \begin{table}[h!]
+% \centering
+% \caption{Scaling relations from \cite{smith2003}. Here
+% \(\epsilon := q/(\lambda_M / 2\lambda_C)\) is a granularity parameter,
+% \(p_c := \lambda_M / (2\lambda_L)\) is a characteristic price interval, and
+% \(f\) and \(g\) are slowly varying functions.}
+% \label{tab:smith_scaling}
+% \begin{tabular}{ll}
+% \toprule
+% \textbf{Quantity} & \textbf{Scaling relation} \\
+% \midrule
+% Average asymptotic depth & \( \lambda_L/\lambda_C \) \\
+% Average spread & \( (\lambda_M/\lambda_L)\, f(\epsilon, \Delta P / p_c) \) \\
+% Slope of depth profile & \( (\lambda_L^2 / \lambda_M \lambda_C)\, g(\epsilon, \Delta P/p_c) \) \\
+% Short-term diffusion & \( \lambda_M^2 \lambda_C^{-1} \lambda_L^{-1} \epsilon^{-1/2} \) \\
+% Long-term diffusion & \( \lambda_M^2 \lambda_C^{-1} \lambda_L^{-1} \epsilon^{1/2} \) \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+% Cont et al.\ \cite{cont2010} propose a simple but analytically tractable Markovian model in
+% which limit orders arrive at distance \(i\) from the opposite best quote according to Poisson
+% rates \(\lambda_i\), market orders arrive with rate \(\mu\), and standing orders cancel at intensity
+% proportional to their queue size. All orders have unit size. The model admits a stationary
+% distribution and yields closed-form expressions for various quantities of interest, including
+% execution probabilities and mid-price movement probabilities.
+\section{The Mathematical Structure of Zero-Intelligence Models}
+
+This section develops a general mathematical framework for modelling limit order books
+through Markovian, order-driven dynamics. Our objective is to understand how the
+structural features of the book, namely, its depth profile, order-flow composition, and quote
+adjustments, which govern the evolution of market observables such as price and spread.  
+
+We begin with a minimalistic agent-based representation of a Bachelier-type price process,
+which illustrates how classical diffusion models arise from microstructural order flows.
+We then introduce the full Markovian description of a limit order book driven by
+independent Poisson processes, including the evolution of queue sizes, best quotes, and
+price increments.
+
+% ----------------------------------------------------------------------
+\subsection{An Elementary Approximation: Perfect Market Making}
+% ----------------------------------------------------------------------
+
+To motivate the Markovian modelling of limit order books, consider a highly stylised
+``perfect market making'' framework. Although simple, it reveals how macroscopic
+diffusion-type price behaviour emerges from discrete order-flow events.
+
+We impose the following assumptions:
+\begin{itemize}
+    \item The order book initially contains one unit-sized limit order at every price level above
+    the best ask \(P_A(0)\) and below the best bid \(P_B(0)\). The initial spread is one tick.
+    \item Buy and sell market orders arrive as independent Poisson processes
+    \( M^+(t) \) and \( M^-(t) \)
+    with respective intensities \( \lambda_+ \) and \( \lambda_- \).
+    \item A single liquidity provider maintains a one-tick spread.  
+    After a buy (respectively sell) market order, they submit a buy (respectively sell) limit order
+    with probability \(u\), and an order on the opposite side with probability \(1-u\).
+\end{itemize}
+
+The resulting mid-price process satisfies:
+\begin{equation}
+dP(t)
+= \Delta P \bigl( dM^+(t) - dM^-(t) \bigr) Z,
+\end{equation}
+where \(Z\) is a Bernoulli random variable with: 
+\[
+\mathbb{P}(Z=1)=u, \qquad \mathbb{P}(Z=0)=1-u,
+\]
+and \( \Delta P \) denotes one tick.
+
+The infinitesimal generator is:
+\begin{equation}
+Lf(P)
+=
+u\lambda_+ \bigl( f(P+\Delta P) - f(P) \bigr)
++
+u\lambda_- \bigl( f(P-\Delta P) - f(P) \bigr).
+\end{equation}
+
+Expanding in Taylor series and grouping first-order and second-order terms yields  
+\begin{align}
+Lf(P)
+&=
+\frac{u(\lambda_+ + \lambda_-)(\Delta P)^2}{2}\,
+\frac{\partial^2 f}{\partial P^2}
++
+u(\lambda_+ - \lambda_-)\Delta P\,
+\frac{\partial f}{\partial P}
++ o((\Delta P)^2).
+\end{align}
+
+Under the scaling limits:
+\begin{equation}
+u(\lambda_+ + \lambda_-)(\Delta P)^2 \to \sigma^2,
+\qquad
+u(\lambda_+ - \lambda_-)\Delta P \to \mu,
+\end{equation}
+the generator converges to the diffusion operator:  
+\begin{equation}
+Lf(P)
+=
+\frac{\sigma^2}{2}\frac{\partial^2 f}{\partial P^2}
++
+\mu \frac{\partial f}{\partial P},
+\end{equation}
+corresponding to a Wiener process with drift.  
+This example illustrates how classical continuous-time models may arise as scaling limits
+of simple order-driven mechanisms.
+
+% ----------------------------------------------------------------------
+\subsection{Limit Order Book Representation and Notation}
+% ----------------------------------------------------------------------
+
+We now introduce the general stochastic framework for a limit order book driven by
+Poissonian order flows. The book is represented in a moving frame of fixed size \(K\) on
+each side of the spread.
+
+Let
+\[
+(a(t);\, b(t)) =
+(a_1(t),\dots,a_K(t);\; b_1(t),\dots,b_K(t)),
+\]
+where
+\begin{itemize}
+    \item \(a_i(t)\) is the queue size \(i\) ticks above the best bid,
+    \item \(b_i(t)\) is the queue size \(i\) ticks below the best ask.
+\end{itemize}
+
+Queue sizes live in \(q\mathbb{Z}\), where \(q\) is the lot size.  
+Define cumulative depths:
+\begin{equation}
+A_i = \sum_{k=1}^i a_k,
+\qquad
+B_i = \sum_{k=1}^i |b_k|.
+\end{equation}
+
+The indices of the first non-empty ask and bid queues are given by the generalized inverse:
+\begin{equation}
+A^{-1}(q') := \inf\{p : A_p > q'\},
+\qquad
+B^{-1}(q') := \inf\{p : B_p > q'\}.
+\end{equation}
+
+The spread in ticks is therefore
+\begin{equation}
+i_S = A^{-1}(0) = B^{-1}(0).
+\end{equation}
+
+% --------------------------------------------
+\paragraph{Boundary Conditions.}
+To ensure that best quotes remain well defined and the state process remains Markovian,
+we impose constant boundary depths \(a_\infty\) and \(b_\infty\) at price levels leaving the
+moving frame. This prevents the book from emptying and keeps the spread bounded.
+
+% ----------------------------------------------------------------------
+\subsection{Order Arrivals and State Transitions}
+% ----------------------------------------------------------------------
+
+The evolution of the order book is driven by three types of events:
+\begin{itemize}
+    \item Market orders, arriving as Poisson processes \(M^\pm(t)\) with intensities
+    \( \lambda_M^\pm \);
+    \item Limit orders at level \(i\), arriving with intensities \( \lambda_{L,i}^\pm \);
+    \item Cancellations at level \(i\), occurring with intensities
+    \( \lambda_{C,i}^\pm a_i \) and \( \lambda_{C,i}^\pm |b_i| \).
+\end{itemize}
+
+All orders have fixed size \(q\).  
+Limit orders arrive relative to the best opposite quote on their respective sides.
+
+The queue sizes satisfy stochastic difference equations combining:
+\begin{itemize}
+    \item Increases from limit-order arrivals,
+    \item Decreases from cancellations and market-order executions,
+    \item \emph{Shift operators} that reindex queues when a best quote is consumed or
+    a limit order arrives inside the spread.
+\end{itemize}
+
+These shift operators maintain exactly \(K\) visible levels in the moving frame and ensure a
+consistent Markovian representation.
+
+% ----------------------------------------------------------------------
+\subsection{Price Dynamics}
+% ----------------------------------------------------------------------
+
+Let \(P_A(t)\) and \(P_B(t)\) denote the best ask and bid prices.  
+Events at or within the spread affect these quotes:
+
+\begin{itemize}
+    \item A market buy consumes depth on the ask side,
+    \item A limit order placed inside the spread improves a quote,
+    \item A cancellation at the best queue may widen the spread.
+\end{itemize}
+
+The best ask satisfies:
+\begin{align}
+dP_A(t)
+= \Delta P \Bigl[
+&\bigl(A^{-1}(q)-i_S\bigr)\, dM^+(t)
+-
+\sum_{i=1}^K (i_S - i)^{+}\, dL^+_i(t)
+\\
+&\qquad
++\bigl(A^{-1}(q)-i_S\bigr) dC^+_{i_S}(t)
+\Bigr].
+\end{align}
+
+A symmetric expression governs \(P_B(t)\).  
+The mid-price \(P(t) = (P_A(t)+P_B(t))/2\) and spread \(S(t)=P_A(t)-P_B(t)\) follow:
+
+\begin{align}
+dP(t)
+&= 
+\frac{\Delta P}{2}
+\Bigl[
+\bigl(A^{-1}(q)-i_S\bigr)\, dM^+(t)
+-
+\bigl(B^{-1}(q)-i_S\bigr)\, dM^-(t)
+\Bigr]
+\notag\\[4pt]
+&\quad
+-
+\frac{\Delta P}{2}
+\sum_{i=1}^K (i_S - i)^{+}\, dL^+_i(t)
++
+\frac{\Delta P}{2}
+\sum_{i=1}^K (i_S - i)^{+}\, dL^-_i(t)
+\notag\\[4pt]
+&\quad
++
+\frac{\Delta P}{2}
+\bigl(A^{-1}(q)-i_S \bigr)\, dC^+_{i_S}(t)
+-
+\frac{\Delta P}{2}
+\bigl(B^{-1}(q)-i_S \bigr)\, dC^-_{i_S}(t).
+\end{align}
+
+Similarly, the spread dynamics satisfy
+\begin{align}
+dS(t)
+&=
+\Delta P
+\Bigl[
+\bigl(A^{-1}(q)-i_S\bigr)\, dM^+(t)
++
+\bigl(B^{-1}(q)-i_S\bigr)\, dM^-(t)
+\Bigr]
+\notag\\[4pt]
+&\quad
+-
+\Delta P
+\sum_{i=1}^K (i_S - i)^{+}\, dL^+_i(t)
+-
+\Delta P
+\sum_{i=1}^K (i_S - i)^{+}\, dL^-_i(t)
+\notag\\[4pt]
+&\quad
++
+\Delta P
+\bigl(A^{-1}(q)-i_S \bigr)\, dC^+_{i_S}(t)
++
+\Delta P
+\bigl(B^{-1}(q)-i_S \bigr)\, dC^-_{i_S}(t).
+\end{align}
+
+These expressions provide explicit links between the local liquidity profile of the book and
+the resulting dynamics of price and spread. Depth at the best levels determines the
+immediate impact of market orders, while the limit-order flow within the spread governs
+quote adjustments and spread behaviour.
+
+\section{Conclusion}
+
+These insights form the foundation for the next chapter, where we move from theory to
+practice by simulating limit order book dynamics under the modelling assumptions
+introduced here. Through numerical experimentation, we will investigate how the
+interaction of arrivals, cancellations, and liquidity profiles gives rise to the statistical
+properties observed in real markets.
+

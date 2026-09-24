@@ -1,0 +1,7 @@
+BTP_Final/Data/
+
+Code/*.csv
+BTP_Final.zip
+.DS_Store
+**/.DS_Store
+**/.ipynb_checkpoints/

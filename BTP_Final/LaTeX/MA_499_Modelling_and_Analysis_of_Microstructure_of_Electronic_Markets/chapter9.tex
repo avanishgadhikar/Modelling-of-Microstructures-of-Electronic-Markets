@@ -1,0 +1,43 @@
+\chapter{Conclusion and Future Directions}
+
+Electronic exchanges and the Limit Order Book (LOB) form the backbone of modern financial markets. Modelling the dynamics of the LOB is a critical task for quantitative researchers and algorithmic traders. It allows practitioners to replay history, test strategies, and understand the fundamental mechanics of price formation. 
+
+This thesis investigated the core mechanisms of market microstructure and explored the methodologies used to simulate order book dynamics. We evaluated both mathematically descriptive models and modern, data-driven machine learning architectures.
+
+\section{Summary of Methodologies}
+
+Our investigation focused on two distinct modeling paradigms: Point Processes and Deep Learning architectures. Each approach presents unique advantages and specific structural challenges.
+
+\subsection{Point Process Models}
+Historically, order arrivals were modeled using simple Poisson processes. However, these models operate under the strict assumption of independent increments. They fail to capture essential market realities like volatility clustering and correlated order flow. 
+
+To resolve this, we explored Hawkes processes. By relaxing the independence assumption, Hawkes models treat order flow as an endogenously excited process. Past events directly trigger future events. This framework successfully replicates the correlated nature of real market activity. 
+
+We specifically examined the Compound Hawkes Process. Standard point processes struggle with constant order sizes and the possibility of negative bid-ask spreads. The Compound Hawkes Process solves this by sampling order sizes from a calibrated empirical distribution. It also applies mechanical constraints to the intensity functions, guaranteeing that the market spread remains positive. While it accurately captured event arrival times, we noted that it can overestimate mid-price volatility.
+
+\subsection{Deep Learning Architectures}
+We then transitioned to deep learning.
+We explored Generative Adversarial Networks (GANs) to simulate order book transitions. By modeling the LOB as a centered snapshot, the GAN learned the conditional probability distribution of future states. The Wasserstein GAN architecture successfully generated synthetic order books that matched the marginal densities and correlation structures of real market data. Our own ablation studies on MSFT tick data confirmed the validity of this approach, despite the constraints of limited training resources.
+
+Next, we analyzed a combined CNN-LSTM architecture designed to forecast high-frequency mid-price directions. We transformed  order book snapshots into stationary variables like order flow and order flow imbalance. 
+\section{Explainability versus Complexity}
+
+A recurring theme is the fundamental trade-off between model explainability and predictive complexity. 
+
+Point process models are mathematically transparent. The parameters of a Hawkes process, such as the baseline intensity and the excitation kernel, have direct economic interpretations. Researchers can explicitly see how an aggressive market order impacts the arrival rate of future limit orders. However, these models require complex calibration techniques.
+
+Conversely, deep learning models easily handle complexity and long-term dependencies. Architectures like the CNN-LSTM and the Conditional GAN excel at replicating empirical data distributions. However, they operate as black-box systems. They lack interpretability.
+
+\section{Future Avenues of Research}
+
+The literature suggests several promising directions for future research in LOB modeling. 
+
+The first is the integration of both paradigms explored in this thesis. Neural Hawkes processes replace fixed mathematical kernels with continuous-time LSTM units. This hybrid approach combines the transparency of a point process with the learning capabilities of a neural network. 
+
+Researchers are actively deriving Stochastic Differential Equations (SDEs) from the limits of complex Hawkes models. This translates discrete order book events into a macroscopic, continuous evolution of the order book state. It offers a more parsimonious alternative to neural networks.
+
+Finally, the advent of Large Language Models (LLMs) provides a novel way to process LOB data. By tokenizing individual order book messages, researchers can train generative models to predict order flow sequences in the exact same manner an LLM predicts the next word in a sentence.
+
+\section{Concluding Remarks}
+
+Simulating the LOB is a highly complex but immensely rewarding computational challenge. There is no single perfect model. The choice of architecture depends entirely on the specific application, whether a researcher prioritizes the mathematical transparency of a Hawkes process or the high-dimensional predictive power of a deep neural network. As computational power continues to grow and algorithmic markets evolve, the models used to simulate them will only become more realistic.

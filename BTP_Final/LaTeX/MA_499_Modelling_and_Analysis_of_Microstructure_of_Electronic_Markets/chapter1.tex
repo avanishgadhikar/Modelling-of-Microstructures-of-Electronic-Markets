@@ -1,0 +1,60 @@
+\pagenumbering{arabic}\hspace{3mm}
+\chapter{A Primer on Limit Order Books and Electronic Exchanges}
+
+Prior to the advent of electronic markets, the public exchanges were predominantly "quote-driven markets" or "open-outcry markets".
+
+For the quote-driven markets, dealers (or market makers) usually bought and sold stocks from clients via a broker. They would post quotes indicating their prices (quotes) for buying and selling the stock. This system resulted in dealers having to hold the asset, and having access to capital as well as the market. However, this system suffered from the shortcomings of being opaque and inefficient, in addition to having additional transaction costs. NYSE, NASDAQ, LSE among others have all utilised this system or its variation during the last two decades of the 20th century. This system can still be seen utilised by FX market dealers who buy low and sell high, making a profit across the bid-ask spread.
+
+In contrast, open outcry markets usually involve buyers and sellers meeting and advertising their prices competitively in a shared space called a ``pit''. While this system cuts out the need for dealers and the risk of holding the asset, it introduces new challenges implicit in the form of ``skilled traders''. These exchanges were often viewed as being inefficient and open to dispute, while also not being transparent enough in the sharing of market data. Exchanges such as the CBOT, CME, LIFFE initially operated an open outcry system before transitioning to an electronic system.
+
+\section{The Shift to Order Driven Markets}
+The two preceding systems (evidently) had inherent design flaws and were criticised for low transparency, latency, and heavy reliance on middle-men. This prompted a shift in general towards Order Driven Markets. The Toronto Stock Exchange was the first to introduce a Computer Assisted Trading System (CATS) with order book features in 1977. The Paris Bourse is cited as having the first fully electronic Limit Order Book (LOB) based equity trading system (1986)
+\cite{Abergel2016}.
+
+A LOB is a setup that the vast majority of organized electronic markets use to store (in their central computer) the list of all the interests of market participants. It contains all orders with characteristics such as: buy/sell side, price, quantity, timestamp, and other market-dependent information. In other words, the LOB contains, at any given point in time, the list of all the transactions that one could possibly perform in the market
+\cite{Abergel2016}.
+
+A market in which buyers and sellers meet via an LOB is called an order driven market. These are electronic platforms where buyers and sellers can place orders, matched subject to some priority rules. These markets eliminate the need for middlemen, permit clients to act as traders themselves, and allow viewing of the entire market. The electronic nature enhanced the ease of trading, reduced latency significantly, and thus permitted High Frequency and Algorithmic Trading. Most markets and exchanges now operate on a fully electronic or at least hybrid version of an LOB
+\cite{Abergel2016, Biais1995}.
+
+\section{Order Book Dynamics}
+In order to complete trades, traders submit orders to the market. Orders can be to buy or sell a specified number of assets, either immediately or at a specified price. In order-driven markets, buy and sell orders are matched as they arrive over time, subject to price and then time priority (FIFO). Accordingly there are three types of orders:
+\begin{itemize}
+    \item \textbf{Limit Order:} Specifies a price at which one is willing to buy/sell a certain number of shares.
+    \item \textbf{Market Order:} Executed immediately at the best available matching quote.
+    \item \textbf{Cancellation Order:} Cancels an existing limit order.
+\end{itemize}
+
+Impatient traders rely on Market Orders (MOs), while patient traders rely on Limit Orders (LOs). Buy LOs are placed on the bid side and sell LOs on the ask side. The spread is defined as the gap between best bid and best ask, and the mid-price is the average of both. The matching engine enforces well-defined algorithms to execute trades, usually price-time priority. Market orders may ``walk the book'' by consuming liquidity at multiple price levels.
+
+The evolution of an order book over time describes market movement. Studying LOBs provides insight into price discovery in financial markets, which behave as complex adaptive systems.
+ 
+The study of LOBs helps to understand price formation, market impact of new information, design trading algorithms (including High Frequency Trading), and aid regulators in ensuring markets are robust.
+\cite{Cartea2015}
+
+\section{Dark Pools}
+The origins of Dark Pools date back to 1979 when U.S. regulations allowed securities to be traded off the exchange. The first dark pool was started by Instinet in 1986 called ``After Hours Cross''. By 2012, 40\% of trading volume was in dark pools. As of January 2025, reports estimate that approximately 51.8\% of trade volume occurs in Dark Pools. Dark pools now exist in large numbers in the U.S., with more than 60 Alternative Trading Systems (ATSs), with their growth being spurred by the High Frequency Trading firms.
+
+\subsection{What are Dark Pools?}
+Dark pools are ATSs that do not provide their best-priced orders for inclusion in consolidated data. They allow anonymous trading away from the lit market but execute at prices no worse than National Best-Bid and Offer (NBBO).
+\cite{BUTI2017244}
+
+The various types of Dark Pools include:
+\begin{itemize}
+    \item Bank/Broker Pools
+    \item Independent/Agency Pools
+    \item Market Maker Pools
+    \item Consortium-Sponsored Pools
+    \item Exchange-Based Pools
+\end{itemize}
+
+Exchanges argue that dark pools divert volume away from lit venues. On the other hand, regulators fear impacts on liquidity provision, trading costs, and welfare distribution between institutional and retail investors.
+
+\section{Regulations Behind Dark Pools}
+Dark pool trading remains legal as it allows large trades without disrupting markets and aligns with free market principles. The SEC is the primary regulatory authority, with FINRA assisting in monitoring compliance. Dark pool trading is regulated under MiFID and MiFID II. 
+\begin{itemize}
+    \item Pre-trade transparency: publishing certain information (prices, volumes, execution quality).
+    \item Post-trade transparency: reporting trade details and consolidated dissemination.
+    \item Surveillance and monitoring systems: detecting suspicious activities.
+\end{itemize}
+Dark pools provide liquidity and protect institutional strategies, but regulation ensures transparency, stability, and accountability. Their legality does not imply absence of regulation.
